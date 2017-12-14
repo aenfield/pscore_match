@@ -49,8 +49,12 @@ class PropensityScore(object):
         predictors = sm.add_constant(self.covariates, prepend=False)
         if method == 'logistic':
             model = sm.Logit(self.treatment, predictors).fit(disp=False, warn_convergence=True)
+            #model = sm.Logit(self.treatment, predictors).fit(disp=True, warn_convergence=True, maxiter=500)
         elif method == 'probit':
             model = sm.Probit(self.treatment, predictors).fit(disp=False, warn_convergence=True)
         else:
             raise ValueError('Unrecognized method')
+
+        # we may want to look at things like mle_retvals, so expose the model itself as a property of the object
+        self.model = model
         return model.predict()
