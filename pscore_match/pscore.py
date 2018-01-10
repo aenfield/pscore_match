@@ -48,7 +48,10 @@ class PropensityScore(object):
         """
         predictors = sm.add_constant(self.covariates, prepend=False)
         if method == 'logistic':
-            model = sm.Logit(self.treatment, predictors).fit(disp=False, warn_convergence=True)
+            #model = sm.Logit(self.treatment, predictors).fit_regularized(alpha = 0.001, disp=False, warn_convergence=True)
+            model = sm.Logit(self.treatment, predictors).fit(method='bfgs', disp=False, warn_convergence=True)
+
+            #model = sm.Logit(self.treatment, predictors).fit(disp=False, warn_convergence=True)
             #model = sm.Logit(self.treatment, predictors).fit(disp=True, warn_convergence=True, maxiter=500)
         elif method == 'probit':
             model = sm.Probit(self.treatment, predictors).fit(disp=False, warn_convergence=True)
